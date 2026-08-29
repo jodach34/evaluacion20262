@@ -3,10 +3,17 @@ using TecnoGasHogar.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configuración opcional para evitar el límite de inotify en contenedores Linux como Render
+if (!builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: false);
+    builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: false);
+}
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Configuración de SQLite con EF Core (Agregado para la base de datos)
+// Configuración de SQLite con EF Core
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -16,7 +23,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -29,7 +35,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Solicitudes}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 app.Run();
