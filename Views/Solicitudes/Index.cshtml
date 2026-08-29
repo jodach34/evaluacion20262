@@ -1,0 +1,40 @@
+@model IEnumerable<TecnoGasHogar.Models.SolicitudServicio>
+
+@{
+    ViewData["Title"] = "Listado de Solicitudes";
+}
+
+<div class="container mt-4">
+    <h2>Listado de Solicitudes de Servicio</h2>
+    <hr />
+
+    <p>
+        <a asp-action="Crear" class="btn btn-success">Registrar Nueva Solicitud</a>
+    </p>
+
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Cliente</th>
+                <th>Teléfono</th>
+                <th>Distrito</th>
+                <th>Tipo de Servicio</th>
+                <th>Descripción</th>
+                <th>Fecha de Registro</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Cliente)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Telefono)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Distrito)</td>
+                    <td>@Html.DisplayFor(modelItem => item.TipoServicio)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Descripcion)</td>
+                    <td>@item.FechaRegistro.ToString("dd/MM/yyyy HH:mm")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
